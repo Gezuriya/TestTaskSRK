@@ -12,6 +12,7 @@ public class MeshController : MonoBehaviour
     private Mesh mesh;
     private Vector3[] verticies, modifiedVerticies;
     public bool upDown = false;
+    [SerializeField] GameObject spawn;
     void Start()
     {
         mesh = GetComponentInChildren<MeshFilter>().mesh;
@@ -21,6 +22,7 @@ public class MeshController : MonoBehaviour
         {
             modifiedVerticies[i] = new Vector3(mesh.vertices[i].x, mesh.vertices[i].y, mesh.vertices[i].z);
         }
+        SpawnPoint();
     }
 
     void RecalculateMesh()
@@ -71,5 +73,17 @@ public class MeshController : MonoBehaviour
             modifiedVerticies[i] = new Vector3(verticies[i].x, verticies[i].y, verticies[i].z);
         }
         RecalculateMesh();
+    }
+    public void SpawnPoint()
+    {
+        int x = Random.Range(-8, 8);
+        int z = Random.Range(-8, 8);
+        Vector3 placeSpawn = new Vector3(x, 100,z);
+        Ray ray = new Ray(placeSpawn, Vector3.down);
+        RaycastHit hit;
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            Instantiate(spawn, new Vector3(hit.point.x, hit.point.y + 1, hit.point.z), Quaternion.identity);
+        }
     }
 }
