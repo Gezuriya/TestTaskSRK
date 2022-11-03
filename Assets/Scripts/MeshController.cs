@@ -16,7 +16,11 @@ public class MeshController : MonoBehaviour
     {
         mesh = GetComponentInChildren<MeshFilter>().mesh;
         verticies = mesh.vertices;
-        modifiedVerticies = mesh.vertices;
+        modifiedVerticies = new Vector3[verticies.Length];
+        for(int i = 0; i<verticies.Length; i++)
+        {
+            modifiedVerticies[i] = new Vector3(mesh.vertices[i].x, mesh.vertices[i].y, mesh.vertices[i].z);
+        }
     }
 
     void RecalculateMesh()
@@ -55,8 +59,17 @@ public class MeshController : MonoBehaviour
         }
         RecalculateMesh();
     }
+    public void UpDown()
+    {
+        upDown = !upDown;
+    }
     public void ResetMesh()
     {
-        mesh.vertices = verticies;
+        modifiedVerticies = new Vector3[verticies.Length];
+        for (int i = 0; i < verticies.Length; i++)
+        {
+            modifiedVerticies[i] = new Vector3(verticies[i].x, verticies[i].y, verticies[i].z);
+        }
+        RecalculateMesh();
     }
 }
